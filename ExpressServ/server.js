@@ -1,27 +1,14 @@
+const dotenv = require('dotenv').config();
 const express = require('express');
 const app = express();
 
 
-app.get('/api/students', (req, res) => {
+//enveronment variables
+const PORT = process.env.SERVER_PORT ;
 
-    res.send('Get route done');
-});
+app.use('/api/students', require('./routes/student.js'));
 
-app.post('/api/students', (req, res) => {
-
-    res.send('POST route done');
-});
-
-app.put('/api/students/:id', (req, res) => {
-
-    res.send(`PUT route done with ID - ${req.params.id}`);
-});
-
-app.patch('/api/students/:id', (req, res) => {
-
-    res.send(`PUT route done with ID - ${req.params.id}`);
-});
-
-app.listen('5050', () => {
-    console.log(`Server is running on port 5050`);
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 })
+console.log(PORT); 
