@@ -11,43 +11,95 @@ const student = JSON.parse( fs.readFileSync(path.join(__dirname, '../data/studen
 // get all students
 const getAllStudent = (req, res ) => {
     
-    res.status(200).json(student)
+    if( student.length > 0){
+        res.status(200).json(student)
+    }else{
+        res.status(404).json({
+            message : "Students data not found"
+        })
+    }
+    
 }
 
 // get single student data
 const getSingleStudent = (req, res ) => {
+    
     let id = req.params.id ;
-    let sigStudent = student.find(data => data.id == id)
-    // res.send('we are on controller-getSingleStudent ' + id)
-    res.status(200).json(sigStudent)
+
+    if(student.some(data => data.id == id)){
+        let sigStudent = student.find(data => data.id == id)
+        // res.send('we are on controller-getSingleStudent ' + id)
+        res.status(200).json(sigStudent)
+    }else{
+        res.status(404).json({
+            message : "Student not found"
+        })
+    }
+    
 }
 
 // create new student
 const createStudent = (req, res ) => { 
-    
-    // console.log(makeNewId(student));
-    student.push({
-        id : makeNewId(student),
-        name : req.body.name,
-        skill : req.body.skill,
-        age : req.body.age,
-        location : req.body.location,
-    })
-    // console.log(student); 
 
-    fs.writeFileSync(path.join(__dirname, '../data/student.json'), JSON.stringify(student));
-    res.json({
-        mess : 'post done'
-    }) 
+    let { name, age, skill} = req.body;
+    if(name == '' || age == '' || skill == ''){
+        res.status(400).json({
+            message : 'Data is not valid'
+        })
+    }else{
+
+        // console.log(makeNewId(student));
+        student.push({
+            id : makeNewId(student),
+            name : req.body.name,
+            skill : req.body.skill,
+            age : req.body.age,
+            location : req.body.location,
+        })
+        // console.log(student); 
+
+        fs.writeFileSync(path.join(__dirname, '../data/student.json'), JSON.stringify(student));
+        res.status(201).json({
+            message : 'Data post successfully'
+        })
+    }
+    
+ 
 }
 
 // update student
 const updateStudent = (req, res ) => {
-    res.send('we are on controller-updateStudent')
+    let id = req.params.id ;
+    // console.log(student[student.findIndex(stu => stu.id == id )]);
+
+//     student[student.findIndex(stu => stu.id == id )] = {
+//         id : id,
+//         name : res.body.name,
+//         skill: res.body.skill,
+//         age : res.body.age,
+//         location : res.body.location
+//    }
+//    console.log(student);
+
+    // res.send('we are on controller-updateStudent') 
+    
 }
 // delete student
 const deleteStudent = (req, res ) => {
-    res.send('we are on controller-deleteStudent')
+    let id = req.params.id ;
+    if(student.some(data => data.id == id)){
+        let updateData = student.filter(data => data.id != id);
+        
+        fs.writeFileSync(path.join(__dirname, '../data/student.json'), JSON.stringify(updateData))
+        res.status(201).json({
+            message : 'Data Delete Successfully'
+        })
+    }else{
+        res.status(400).json({
+            message : 'Data not found'
+        })
+    }
+    
 }
 module.exports = {
     getAllStudent,
