@@ -70,19 +70,22 @@ const createStudent = (req, res ) => {
 // update student
 const updateStudent = (req, res ) => {
     let id = req.params.id ;
-    // console.log(student[student.findIndex(stu => stu.id == id )]);
+    // console.log(id);
 
-//     student[student.findIndex(stu => stu.id == id )] = {
-//         id : id,
-//         name : res.body.name,
-//         skill: res.body.skill,
-//         age : res.body.age,
-//         location : res.body.location
-//    }
-//    console.log(student);
+    student[student.findIndex(stu => stu.id == id )] = {
+        id : id,
+        name : req.body.name,
+        skill: req.body.skill,
+        age : req.body.age,
+        location : req.body.location
+    }
+    // console.log(student);
+    fs.writeFileSync(path.join(__dirname, '../data/student.json'), JSON.stringify(student))
 
-    // res.send('we are on controller-updateStudent') 
-    
+    res.status(202).json({
+        message : 'Data UPDATE Successfully'
+    })
+        
 }
 // delete student
 const deleteStudent = (req, res ) => {
@@ -91,7 +94,7 @@ const deleteStudent = (req, res ) => {
         let updateData = student.filter(data => data.id != id);
         
         fs.writeFileSync(path.join(__dirname, '../data/student.json'), JSON.stringify(updateData))
-        res.status(201).json({
+        res.status(202).json({
             message : 'Data Delete Successfully'
         })
     }else{

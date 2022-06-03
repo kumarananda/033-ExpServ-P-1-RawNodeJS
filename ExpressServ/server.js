@@ -17,4 +17,4 @@ app.use('/api/students', require('./routes/student.js'));
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 })
-// console.log(PORT);   
+// console.log(PORT);    
