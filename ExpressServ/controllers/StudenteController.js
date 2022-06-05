@@ -71,20 +71,50 @@ const createStudent = (req, res ) => {
 const updateStudent = (req, res ) => {
     let id = req.params.id ;
     // console.log(id);
+
+    // if(!student.some(data => data.id == id)){
+    //     res.status(400).json({
+    //         message : 'Data not found'
+    //     })
+    // }else{}
+    
+    // if(req.body.name == '' || req.body.skill == ''|| req.body.age== '' || req.body.location ==''){
+    //     res.status(400).json({
+    //         message : 'Data not Stable'
+    //     })
+    // }else{
+    //     student[student.findIndex(stu => stu.id == id )] = {
+    //         id : id,
+    //         name : req.body.name, 
+    //         skill: req.body.skill,
+    //         age : req.body.age,
+    //         location : req.body.location
+    //     }
+    //     // console.log(student);
+    //     fs.writeFileSync(path.join(__dirname, '../data/student.json'), JSON.stringify(student))
+    
+    //     res.status(202).json({
+    //         message : 'Data UPDATE Successfully'
+    //     })
+    // }
+ 
     if(student.some(data => data.id == id)){
-        let { name, skill, age, location } = req.body;
-        console.log(name);
-        if(name == '' || skill == '', age == '' || location == ''){
+        // let { name, skill, age, location } = req.body;
+        // console.log(req.body.name);
+        // if(name === '' || skill === '', age === '' || location === ''){ // error 
+        if(req.body.name == '' || req.body.skill == ''|| req.body.age== '' || req.body.location ==''){
+            
             res.status(400).json({
                 message : 'Data not Stable'
             })
         }else{
             student[student.findIndex(stu => stu.id == id )] = {
                 id : id,
-                name : name,
-                skill: skill,
-                age : age,
-                location : location
+                name : req.body.name, 
+                skill: req.body.skill,
+                age : req.body.age,
+                location : req.body.location
+                            
             }
             // console.log(student);
             fs.writeFileSync(path.join(__dirname, '../data/student.json'), JSON.stringify(student))
@@ -92,7 +122,7 @@ const updateStudent = (req, res ) => {
             res.status(202).json({
                 message : 'Data UPDATE Successfully'
             })
-        }
+        } 
         
     }else{
         res.status(400).json({
